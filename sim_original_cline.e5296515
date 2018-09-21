@@ -1,0 +1,6 @@
+/opt/gridengine/default/spool/compute-0-32/job_scripts/5296515: line 2: : command not found
+/opt/gridengine/default/spool/compute-0-32/job_scripts/5296515: line 13: : command not found
+./a.out: /lib64/libc.so.6: version `GLIBC_2.14' not found (required by ./a.out)
+./a.out: /usr/lib64/libstdc++.so.6: version `CXXABI_1.3.8' not found (required by ./a.out)
+./a.out: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.18' not found (required by ./a.out)
+./a.out: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by ./a.out)

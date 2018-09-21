@@ -1,0 +1,30 @@
+
+_________________________________________
+
+d = 10, N = 20, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 1000, L = 200, T1 = 10, T2 = 10, T3 = 10, pas = 1
+
+Resultats dans fichier result_d10_N20_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS1000_L200_Ts10-10-10_1.h5
+
+30 generations ont pris 0 heure(s) 0 minute(s) 0 secondes
+Wed Sep 19 12:08:24 2018
+
+_________________________________________
+
+d = 10, N = 20, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 1000, L = 200, T1 = 10, T2 = 10, T3 = 10, pas = 1
+
+Resultats dans fichier result_d10_N20_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS1000_L200_Ts10-10-10_1.h5
+
+30 generations ont pris 0 heure(s) 0 minute(s) 1 secondes
+Wed Sep 19 12:08:58 2018
+
+_________________________________________
+
+d = 10, N = 20, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 1000, L = 200, T1 = 10, T2 = 10, T3 = 10, pas = 1
+
+Resultats dans fichier result_d10_N20_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS1000_L200_Ts10-10-10_1.h5
+
+30 generations ont pris 0 heure(s) 0 minute(s) 0 secondes
+Wed Sep 19 12:09:12 2018

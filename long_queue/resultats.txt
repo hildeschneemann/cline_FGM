@@ -1,0 +1,50 @@
+
+_________________________________________
+
+d = 100, N = 2000, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 1000, L = 200, T1 = 1000, T2 = 5000, T3 = 5000, pas = 100
+
+Resultats dans fichier result_d100_N2000_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS1000_L200_Ts1000-5000-5000_1.h5
+
+11000 generations ont pris 23 heure(s) 48 minute(s) 54 secondes
+Thu Sep 20 12:14:43 2018
+
+_________________________________________
+
+d = 100, N = 2000, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 1000, L = 200, T1 = 1000, T2 = 5000, T3 = 5000, pas = 100
+
+Resultats dans fichier result_d100_N2000_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS1000_L200_Ts1000-5000-5000_1.h5
+
+11000 generations ont pris 26 heure(s) 39 minute(s) 23 secondes
+Thu Sep 20 16:28:30 2018
+
+_________________________________________
+
+d = 100, N = 2000, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 1000, L = 200, T1 = 1000, T2 = 5000, T3 = 5000, pas = 100
+
+Resultats dans fichier result_d100_N2000_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS1000_L200_Ts1000-5000-5000_1.h5
+
+11000 generations ont pris 23 heure(s) 50 minute(s) 26 secondes
+Fri Sep 21 10:43:14 2018
+
+_________________________________________
+
+d = 100, N = 200, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 100, L = 20, T1 = 500, T2 = 500, T3 = 500, pas = 100
+
+Resultats dans fichier result_d100_N200_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS100_L20_Ts500-500-500_1.h5
+
+1500 generations ont pris 0 heure(s) 2 minute(s) 43 secondes
+Fri Sep 21 14:22:53 2018
+
+_________________________________________
+
+d = 100, N = 200, mig = 0.05, b = 49, n = 5, m = 5, sigma = 0.1, alpha = 0.01, diff = 2
+Q = 2, U = 0.1, nbS = 100, L = 20, T1 = 1000, T2 = 1000, T3 = 1000, pas = 100
+
+Resultats dans fichier result_d100_N200_mig0.05_b49_n5_m5_sig0.1_diff2_a0.01_Q2_U0.1_nbS100_L20_Ts1000-1000-1000_1.h5
+
+3000 generations ont pris 0 heure(s) 5 minute(s) 39 secondes
+Fri Sep 21 14:28:48 2018
