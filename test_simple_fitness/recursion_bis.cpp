@@ -224,9 +224,9 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
                 nb2 = 2 * (nb + j);
                 //sz2 = 0;
 				// determine hybrid index and heterozygosity
-				tmp1 = (pop[2*nb2].sel ^ pop[2*nb2+1].sel);
+				tmp1 = (pop[nb2].sel ^ pop[nb2+1].sel);
 				p12 = tmp1.count() / nbSv; //creates a vector with a 0 for homozygote and 1 for heterozygote sites
-				tmp2 = (pop[2*nb2].sel & pop[2*nb2+1].sel);
+				tmp2 = (pop[nb2].sel & pop[nb2+1].sel);
 				p2 = tmp2.count();
 				HI = p2+ p12/2; //so how do I determine parental alleles? do I simply say 0 vs 1 ? then I need to start with diverged pop and have no mutation I guess
 				
