@@ -66,7 +66,7 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
     int NbGen = T1v + T2v + T3v; // total number of generations
 	int NbGen_1 = NbGen - 1;
     int Tcontact = T1v + T2v; // time of secondary contact
-	int Nd1 = Nv * bv;
+	int Nd1 = twoN * bv;
 	
 	boost::dynamic_bitset<> tmp1;
 	boost::dynamic_bitset<> tmp2;
