@@ -47,25 +47,24 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 {
 	// variables:
 
-	int i, j, k, loc, gen, mut, par1, par2, ind, nb, nb1, nb2, nb3, nb4, nbMig, ns, part, nbCo, nbSign;
+	int i, j, k, loc, gen, gen2, mut, par1, par2, ind, nb, nb1, nb2, nb3, nb4, nbMig, ns, part, nbCo, nbSign;
 	double w, wbar, varw, rd, pp, d, x, sz2, HI, p12, p2, delta_p, p_old;
 	vector<int> store;
 
 	// various fixed quantities:
 	
-    int Nd = Nv * dv;
-    int nd = nv * dv;
-    int twoN = 2*Nv;
-    int twoNd = 2*Nv*dv;
+    	int Nd = Nv * dv;
+    	int nd = nv * dv;
+    	int twoN = 2*Nv;
+    	int twoNd = 2*Nv*dv;
 	int N_1 = Nv - 1;
 	int n_1 = nv - 1;
 	int nbS_1 = nbSv - 1;
 	int nS = nbSv * nv;
 	int Nn = Nv * nv;
 	double hQ = Qv / 2.0;
-    int NbGen = T1v + ff1v + fpv; // total number of generations
+	int NbGen = T1v; // total number of generations
 	int NbGen_1 = NbGen - 1;
-    int Tcontact = T1v + ff1v; // time of secondary contact
 	int Nd1 = twoN * bv;
 	bool sign = true;
 	bool equi = false;
@@ -82,7 +81,7 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	stringstream nameF;
 	nameF << "result_d" << dv << "_N" << Nv << "_mig" << migv << "_b" << bv
 		<< "_n" << nv << "_m" << mv << "_sig" << sigv << "_diff" << diffv
-        << "_a" << av << "_Q" << Qv << "_U" << Uv << "_nbS" << nbSv
+        	<< "_a" << av << "_Q" << Qv << "_U" << Uv << "_nbS" << nbSv
 		<< "_L" << Lv << "_Ts" << T1v << "_ff1" << ff1v << "_fp" << fpv
 		<< "_r" << rv << "_" << nov << ".h5";
 	nameF >> fileName;
@@ -115,11 +114,11 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	
 	double* freq_equi = new double[nbSv*3*10]; //check whether equilibrium is reached
 	double* sdata_freq_old = new double[nbSv*3*10];
-    // population: table of 2N*d chromosomes (two chromosomes per individual):
+    	// population: table of 2N*d chromosomes (two chromosomes per individual):
 
-    chr * pop = new chr [twoNd];
+    	chr * pop = new chr [twoNd];
 	chr * temp = new chr [twoNd]; // used to generate next generation
-    chr * cp;
+    	chr * cp;
 
 	// "mutations" will hold the effect of the 1 allele at each locus
 	// on each phenotypic axis:
@@ -130,9 +129,9 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 
 	double * Wtot = new double [Nd];
     
-    // maximal fitness in each deme:
-    
-    double * Wmax = new double [dv];
+    	// maximal fitness in each deme:
+    	
+    	double * Wmax = new double [dv];
 	
 	// tables for means and variances of phenotypic traits:
 
@@ -184,6 +183,7 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	writeAttributeHDF5(file, dset_freq, "T1", T1v);
 	writeAttributeHDF5(file, dset_freq, "ff1", ff1v);
 	writeAttributeHDF5(file, dset_freq, "fp", fpv);
+	writeAttributeHDF5(file, dset_freq, "r", rv);
 	writeAttributeHDF5(file, dset_freq, "pas", pasv);
 	writeAttributeHDF5(file, dset_freq, "no", nov);
 
@@ -191,17 +191,17 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	// initialization: allele 0 is fixed at all selected loci:
 
 	for (i = 0; i < twoNd; i++)
-    {
+    	{
 		pop[i].sel.resize(nbSv);
-        temp[i].sel.resize(nbSv);
-    }
+        	temp[i].sel.resize(nbSv);
+    	}	
 
 		// initializes complete differentiation
 	for (i = 0; i < Nd1; i++)
 	{
 		    for (j = 0; j < nbS_1; j++)
-				pop[i].sel.flip(j);
-                temp[i].sel.flip(j);
+			pop[i].sel.flip(j);
+                	temp[i].sel.flip(j);
 	}
 
 
@@ -209,29 +209,21 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 
     
     // generations:
-gen=0;	
-	while (equi==false & gen < NbGen)
-	{ 
-		// fitness of each individual, maximal fitnesses,
-		// mean fitness and variance in fitness:
+	for (gen=0; gen < NbGen; gen++){
+	
+		//while (equi==false & gen < NbGen)
+		//{ 
 		
-		wbar = 0;
-		varw = 0;
-        //for (k = 0; k < nv; k++)
-        //{
-        //    m[k] = 0;
-        //    v[k] = 0;
-        //}
         
-		for (i = 0; i < dv; i++)  // for each deme
-        {
-            nb = i * Nv;
-            Wmax[i] = 0;
+			for (i = 0; i < dv; i++)  // for each deme
+        		{
+            			nb = i * Nv;
+            			Wmax[i] = 0;
             
-            for (j = 0; j < Nv; j++)  // for each individual
-            {
-                nb2 = 2 * (nb + j);
-                //sz2 = 0;
+            		for (j = 0; j < Nv; j++)  // for each individual
+            		{
+                		nb2 = 2 * (nb + j);
+               
 				// determine hybrid index and heterozygosity
 				tmp1 = (pop[nb2].sel ^ pop[nb2+1].sel);
 				p12 = tmp1.count(); 
@@ -239,30 +231,21 @@ gen=0;
 				tmp2 = (pop[nb2].sel & pop[nb2+1].sel);
 				p2 = tmp2.count();
 				p2 /= nbSv;
-				HI = p2+ p12/2; //so how do I determine parental alleles? do I simply say 0 vs 1 ? then I need to start with diverged pop and have no mutation I guess
+				HI = p2+ p12/2; 
 
-				sz2 = fpv + (4 - 2*fpv)*4*HI*(1-HI)+(ff1v-1)*p12+(ff1v-1+rv)*p12*(1-p12);
-                // fitness
+				sz2 = fpv + (4 - 2*fpv)*4*HI*(1-HI)+(ff1v-1)*p12+(ff1v-1+rv)*p12*(1-p12); //breakdown
+                		
+				// fitness
                 
-                w = exp(-av * pow(sz2,hQ));
-                Wtot[nb2/2] = w;
-		//if (gen == NbGen_1)
-			HIend[nb2/2] = HI;
+                		w = exp(-av * pow(sz2,hQ));
+                		Wtot[nb2/2] = w;
+				if (gen == NbGen_1)
+					HIend[nb2/2] = HI;
 
-                wbar += w;
-                varw += w * w;
-                if (Wmax[i] < w)
-                    Wmax[i] = w;
-            }
-        }
-		wbar /= Nd;
-		varw /= Nd;
-        //for (k = 0; k < nv; k++)
-        //{
-            //m /= Nd;
-            //v /= Nd;
-            //v -= (m * m);
-        //}
+                		if (Wmax[i] < w)
+                    			Wmax[i] = w;
+            		}
+        		}
         
         // sampling the next generation:
         
@@ -358,14 +341,6 @@ gen=0;
             }
         }
         
-        // mutation
-        
-        //for (i = 0; i < twoNd; i++)
-        //{
-        //    mut = int(poisdev(Uv)); // number of new mutations
-        //    for (j = 0; j < mut; j++)
-        //        temp[i].sel.flip(int(rnd.randInt(nbS_1)));
-        //}
 
         // update population:
 
@@ -386,15 +361,20 @@ gen=0;
 					nb = twoN * i;
 					d = 0;
 					for (j = 0; j < twoN; j++)
+					{
 						if (pop[nb + j].sel[loc] == 1)
-							d += 1;
+						{	d += 1;
 							sdata_freq[loc * dv + i] = d / twoN;
-							if (i == bv & loc == 1)
-								delta_p = d / twoN - p_old;
-								p_old = d / twoN;
-						}					
-
+						}
 					}
+					//if (i == bv & loc == 1)
+					//	delta_p = d / twoN - p_old;
+					//	p_old = d / twoN;
+					//	cout << ", delta_p:" << delta_p << ", p:"<< p_old;
+				}					
+
+			}
+			writeTimeStepHDF5(file, dset_freq, RANK_FREQ, dim_sub_freq, sdata_freq, indexGen);
 			//count how often the sign of the change in allele frequency changes
 			if (delta_p ==0)
 				nbSign += 1;
@@ -407,8 +387,8 @@ gen=0;
 			if (nbSign > 10)
 				equi=true;			
 
-			writeTimeStepHDF5(file, dset_freq, RANK_FREQ,
-				dim_sub_freq, sdata_freq, indexGen);
+			//writeTimeStepHDF5(file, dset_freq, RANK_FREQ,
+			//	dim_sub_freq, sdata_freq, indexGen);
 
 			// mean fitness of demes --> THIS TOO!
 			for (i = 0; i < dv; i++) // demes
@@ -425,12 +405,26 @@ gen=0;
 
 			// which generation was saved
 			savedGen[indexGen] = gen + 1;
-
 			indexGen +=	1;
 		}
 		
-	gen+=1;
 	} // end gen loop
+
+
+	//now I need to fill up the rest of the allele freq and fitness matrix
+	//for (gen2 = gen; gen2 < NbGen; gen2++){
+	//	if(gen2 % pasv == 0 || gen2 == NbGen_1)
+	//		writeTimeStepHDF5(file, dset_freq, RANK_FREQ,
+	//			dim_sub_freq, sdata_freq, indexGen);
+	//		writeTimeStepHDF5(file, dset_w, RANK_W,
+	//			dim_sub_w, sdata_w, indexGen);
+	//	
+	//		savedGen[indexGen] = gen2 + 1;
+	//		indexGen +=	1;
+	//}
+	
+
+
 	writeHISaved(file, dset_hi, HIend);
 
 	// write savedGen to file
