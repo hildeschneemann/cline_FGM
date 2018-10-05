@@ -194,15 +194,18 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
     	{
 		pop[i].sel.resize(nbSv);
         	temp[i].sel.resize(nbSv);
+		if(i <= Nd1)
+			pop[i].sel.flip();
+			temp[i].sel.flip();
     	}	
 
 		// initializes complete differentiation
-	for (i = 0; i < Nd1; i++)
-	{
-		    for (j = 0; j < nbS_1; j++)
-			pop[i].sel.flip(j);
-                	temp[i].sel.flip(j);
-	}
+	//for (i = 0; i < Nd1; i++)
+	//{
+		   // for (j = 0; j < nbS_1; j++)
+	//		pop[i].sel.flip();
+        //       	temp[i].sel.flip();
+	//}
 
 
 	
@@ -375,7 +378,12 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 
 			}
 			writeTimeStepHDF5(file, dset_freq, RANK_FREQ, dim_sub_freq, sdata_freq, indexGen);
+			
 			//count how often the sign of the change in allele frequency changes
+			delta_p = sdata_freq[bv] - p_old;
+			p_old = sdata_freq[bv];
+			cout << ", delta_p:" << delta_p << ", p:" << p_old;
+  
 			if (delta_p ==0)
 				nbSign += 1;
 			if (delta_p < 0 & sign ==true)
