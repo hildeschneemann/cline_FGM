@@ -30,7 +30,7 @@ void ouvrirFichierS()
 // returns 1 if end of input file, else returns 0
 
 bool lireFichier(int &dr, int &Nr, double &migr, int &br, int &nr, int &mr, double &sigr, double &ar, double &diffr, double &Qr, double &Ur, int &nbSr, double &Lr,
-                 int &T1r, int &ff1r, int &fpr, int &pasr)
+                 int &T1r, int &ff1r, int &fpr, int &rr, int &pasr)
 {					 
 	int x;
 	bool term;
@@ -56,6 +56,7 @@ bool lireFichier(int &dr, int &Nr, double &migr, int &br, int &nr, int &mr, doub
 		fscanf(fichierE,"%d ",&T1r);
 		fscanf(fichierE,"%d ",&ff1r);
 		fscanf(fichierE,"%d ",&fpr);
+		fscanf(fichierE, "%d ",&rr);
 		fscanf(fichierE,"%d ",&pasr);
 		
 		term = false;
@@ -67,7 +68,7 @@ bool lireFichier(int &dr, int &Nr, double &migr, int &br, int &nr, int &mr, doub
 // writes parameter values in output file:
 
 void ecrireParametres(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv, double av, double diffv, double Qv, double Uv, int nbSv, double Lv,
-                      int T1v, int ff1v, int fpv, int pasv)
+                      int T1v, int ff1v, int fpv, int rv, int pasv)
 {
 	fprintf(fichierS,"\n_________________________________________\n");
 	fprintf(fichierS,"\nd = %d", dv);
@@ -86,5 +87,6 @@ void ecrireParametres(int dv, int Nv, double migv, int bv, int nv, int mv, doubl
 	fprintf(fichierS,", T1 = %d", T1v);
 	fprintf(fichierS,", ff1 = %d", ff1v);
 	fprintf(fichierS,", fp = %d", fpv);
+	fprintf(fichierS,", r =  %d", rv);
 	fprintf(fichierS,", pas = %d", pasv);
 }

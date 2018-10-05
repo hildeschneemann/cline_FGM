@@ -43,12 +43,12 @@ p12: heterozygosity of focal individual
 
 
 void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv, double av, double diffv, double Qv, double Uv, int nbSv, double Lv,
-			   int T1v, int ff1v, int fpv, int pasv, int nov)
+			   int T1v, int ff1v, int fpv, int rv, int pasv, int nov)
 {
 	// variables:
 
-	int i, j, k, loc, gen, mut, par1, par2, ind, nb, nb1, nb2, nb3, nb4, nbMig, ns, part, nbCo;
-	double w, wbar, varw, rd, pp, d, x, sz2, HI, p12, p2;
+	int i, j, k, loc, gen, mut, par1, par2, ind, nb, nb1, nb2, nb3, nb4, nbMig, ns, part, nbCo, nbSign;
+	double w, wbar, varw, rd, pp, d, x, sz2, HI, p12, p2, delta_p, p_old;
 	vector<int> store;
 
 	// various fixed quantities:
@@ -67,7 +67,9 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	int NbGen_1 = NbGen - 1;
     int Tcontact = T1v + ff1v; // time of secondary contact
 	int Nd1 = twoN * bv;
-	
+	bool sign = true;
+	bool equi = false;
+
 	boost::dynamic_bitset<> tmp1;
 	boost::dynamic_bitset<> tmp2;
 	boost::dynamic_bitset<> tmp3;
@@ -81,8 +83,8 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	nameF << "result_d" << dv << "_N" << Nv << "_mig" << migv << "_b" << bv
 		<< "_n" << nv << "_m" << mv << "_sig" << sigv << "_diff" << diffv
         << "_a" << av << "_Q" << Qv << "_U" << Uv << "_nbS" << nbSv
-		<< "_L" << Lv << "_Ts" << T1v << "-" << ff1v << "-" << fpv
-		<< "_" << nov << ".h5";
+		<< "_L" << Lv << "_Ts" << T1v << "_ff1" << ff1v << "_fp" << fpv
+		<< "_r" << rv << "_" << nov << ".h5";
 	nameF >> fileName;
 
 	const H5std_string FILE_NAME(fileName);
@@ -110,8 +112,9 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	double* sdata_w = new double[1*DIM_W1];
 	double* sdata_hi = new double[DIM_HI];
 	int* savedGen = new int[DIM0];
-
 	
+	double* freq_equi = new double[nbSv*3*10]; //check whether equilibrium is reached
+	double* sdata_freq_old = new double[nbSv*3*10];
     // population: table of 2N*d chromosomes (two chromosomes per individual):
 
     chr * pop = new chr [twoNd];
@@ -184,11 +187,6 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	writeAttributeHDF5(file, dset_freq, "pas", pasv);
 	writeAttributeHDF5(file, dset_freq, "no", nov);
 
-	// for time length measure:
-
-	time_t debut, fin;
-	struct tm *ptr;
-	debut = time(0);
 	
 	// initialization: allele 0 is fixed at all selected loci:
 
@@ -211,8 +209,8 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 
     
     // generations:
-	
-	for (gen = 0; gen < NbGen; gen++)
+gen=0;	
+	while (equi==false & gen < NbGen)
 	{ 
 		// fitness of each individual, maximal fitnesses,
 		// mean fitness and variance in fitness:
@@ -242,33 +240,13 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 				p2 = tmp2.count();
 				p2 /= nbSv;
 				HI = p2+ p12/2; //so how do I determine parental alleles? do I simply say 0 vs 1 ? then I need to start with diverged pop and have no mutation I guess
-				//cout << " p12:  " <<p12 << "p2:  " << p2 << "  HI:  " << HI << "  tmp1: 11" << tmp1 << "  tmp2:  " << tmp2;		
-				//should we do something with d here?? analogous to d=0.5; d += mutations[nv * loc + k];
-				
-                //for (k = 0; k < nv; k++)  // phenotypes of the individual
-                //{
-                    //d = 0;
-                    //for (loc = 0; loc < nbSv; loc++)
-                    //{
-                    //    if (pop[nb2].sel[loc] == 1)
-                    //        d += mutations[nv * loc + k];
-                    //    if (pop[nb2+1].sel[loc] == 1)
-                    //        d += mutations[nv * loc + k];
-                    //}
-                    
-                    //if ((gen > T1v) && (k == 0)) // change in optimum along first axis after T1 generations
-                    //    d -= diffv;
-                    
-                    //m += d;
-                    //v += d * d;
-                    //sz2 += d * d; // "sz2" is the square of the distance to the optimum
-                //}
 
-                // fitness:
+				sz2 = fpv + (4 - 2*fpv)*4*HI*(1-HI)+(ff1v-1)*p12+(ff1v-1+rv)*p12*(1-p12);
+                // fitness
                 
-                w = 1 + p12 - 4*HI*(1-HI);
+                w = exp(-av * pow(sz2,hQ));
                 Wtot[nb2/2] = w;
-		if (gen == NbGen_1)
+		//if (gen == NbGen_1)
 			HIend[nb2/2] = HI;
 
                 wbar += w;
@@ -411,8 +389,24 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 						if (pop[nb + j].sel[loc] == 1)
 							d += 1;
 							sdata_freq[loc * dv + i] = d / twoN;
-						}
+							if (i == bv & loc == 1)
+								delta_p = d / twoN - p_old;
+								p_old = d / twoN;
+						}					
+
 					}
+			//count how often the sign of the change in allele frequency changes
+			if (delta_p ==0)
+				nbSign += 1;
+			if (delta_p < 0 & sign ==true)
+				nbSign +=1;
+				sign = false;
+			if (delta_p > 0 & sign==false)
+				nbSign+=1;
+				sign=true;
+			if (nbSign > 10)
+				equi=true;			
+
 			writeTimeStepHDF5(file, dset_freq, RANK_FREQ,
 				dim_sub_freq, sdata_freq, indexGen);
 
@@ -435,7 +429,7 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 			indexGen +=	1;
 		}
 		
-
+	gen+=1;
 	} // end gen loop
 	writeHISaved(file, dset_hi, HIend);
 
@@ -448,22 +442,13 @@ void recursion(int dv, int Nv, double migv, int bv, int nv, int mv, double sigv,
 	dset_gen.close();
 	file.close();
 
-	fin = time(0);
 
 	// writes in output file:
 	fprintf(fichierS, "\n\nResultats dans fichier ");
 	fprintf(fichierS, "%s", fileName.c_str());
 	fprintf(fichierS, "\n");
 	         
-	// time length:
-	int temps = int(difftime(fin, debut));
-	fprintf(fichierS,
-		 "\n%d generations ont pris %d heure(s) %d minute(s) %d secondes\n",
-		 NbGen, temps / 3600, (temps % 3600) / 60, temps % 60);
 		
-	// date and time:
-	ptr=localtime(&fin);
-	fprintf(fichierS, "%s", asctime(ptr));
 	
 	delete [] pop;
 	delete [] temp;

@@ -19,7 +19,7 @@ int main(int argc, char * argv[])
 {
 	// definitions of variables:
 
-	int d, Nt, b, n, m, nbS, T1, ff1, fp, pas;
+	int d, Nt, b, n, m, nbS, T1, ff1, fp, pas, r;
 	double mig, sig, a, diff, Q, U, L;
 
 	// opens input and output files:
@@ -34,17 +34,17 @@ int main(int argc, char * argv[])
 	{
 		// reads parameter values;
 
-		fin = lireFichier(d, Nt, mig, b, n, m, sig, a, diff, Q, U, nbS, L, T1, ff1, fp, pas);
+		fin = lireFichier(d, Nt, mig, b, n, m, sig, a, diff, Q, U, nbS, L, T1, ff1, fp, r, pas);
 
 		if (!fin)
 		{
 			// writes parameter values in output file:
 
-			ecrireParametres(d, Nt, mig, b, n, m, sig, a, diff, Q, U, nbS, L, T1, ff1, fp, pas);
+			ecrireParametres(d, Nt, mig, b, n, m, sig, a, diff, Q, U, nbS, L, T1, ff1, fp, r, pas);
 
 			// runs the simulation:
 
-			recursion(d, Nt, mig, b, n, m, sig, a, diff, Q, U, nbS, L, T1, ff1, fp, pas, no);
+			recursion(d, Nt, mig, b, n, m, sig, a, diff, Q, U, nbS, L, T1, ff1, fp, r, pas, no);
 
 			no++;
 		}
