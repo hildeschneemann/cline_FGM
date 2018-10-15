@@ -1,0 +1,34 @@
+#include <iostream>
+#include <cmath>
+#include "MersenneTwister.h"
+using namespace std;
+
+extern MTRand rnd;
+
+void brownian_bridge(int nbSv)
+{
+	int i =0;
+	double gasdev();
+	double ii =1.0;
+	double * times = new double [nbSv];
+	double * distW = new double [nbSv];
+	double * cumW = new double [nbSv];
+	double * Brown = new double [nbSv];
+
+        times[0] = distW[0] = cumW[0] = Brown[0] = 0;
+
+        for (i = 1; i < nbSv; i++)
+        {
+                times[i] = ii / (nbSv-1);
+                distW[i] = gasdev() / sqrt(nbSv);
+                cumW[i] = cumW[i-1] + distW[i];
+                ii += 1.0;
+        }
+
+        for (i = 1; i < nbSv; i++)
+        {
+                Brown[i] = cumW[i] - times[i] * cumW[nbSv-1];
+                //cout << times[i] << "\t" << distW[i] << "\t" << cumW[i] << "\t" << Brown[i] << "\n";
+         }
+//	return Brown;
+}
