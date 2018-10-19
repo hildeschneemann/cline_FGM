@@ -1,4 +1,0 @@
-/opt/gridengine/default/spool/compute-0-32/job_scripts/5296516: line 2: : command not found
-/opt/gridengine/default/spool/compute-0-32/job_scripts/5296516: line 13: : command not found
-ModuleCmd_Load.c(208):ERROR:105: Unable to locate a modulefile for 'singularity'
-/opt/gridengine/default/spool/compute-0-32/job_scripts/5296516: line 16: singularity: command not found
